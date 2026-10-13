@@ -1,0 +1,36 @@
+! ============================================================
+! Router-on-a-Stick Sub-Interface Template
+! Apply to HQ-RTR G0/0 for inter-VLAN routing
+! ============================================================
+
+interface g0/0
+ no shutdown
+
+interface g0/0.10
+ encapsulation dot1Q 10
+ ip address 10.0.10.1 255.255.255.0
+ description MGMT_VLAN
+
+interface g0/0.20
+ encapsulation dot1Q 20
+ ip address 10.0.20.1 255.255.255.0
+ description CORP_DATA_VLAN
+
+interface g0/0.30
+ encapsulation dot1Q 30
+ ip address 10.0.30.1 255.255.255.0
+ description VOIP_VLAN
+
+interface g0/0.40
+ encapsulation dot1Q 40
+ ip address 10.0.40.1 255.255.255.0
+ description GUEST_WIFI_VLAN
+
+interface g0/0.50
+ encapsulation dot1Q 50
+ ip address 10.0.50.1 255.255.255.0
+ description SERVERS_VLAN
+
+! --- Verify with ---
+! show ip interface brief
+! show vlans

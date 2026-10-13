@@ -1,0 +1,30 @@
+! ============================================================
+! NAT/PAT (Overload) Configuration Template
+! Apply to HQ-RTR for internet access via ISP
+! ============================================================
+
+! --- Define internal networks allowed to NAT ---
+access-list 10 permit 10.0.0.0 0.0.255.255
+
+! --- Apply NAT overload on the outside interface ---
+ip nat inside source list 10 interface g0/1 overload
+
+! --- Mark interfaces ---
+interface g0/0.20
+ ip nat inside
+interface g0/0.30
+ ip nat inside
+interface g0/0.40
+ ip nat inside
+interface g0/0.50
+ ip nat inside
+
+interface g0/1
+ ip nat outside
+
+! --- Default route to ISP ---
+ip route 0.0.0.0 0.0.0.0 203.0.113.1
+
+! --- Verify with ---
+! show ip nat translations
+! show ip nat statistics

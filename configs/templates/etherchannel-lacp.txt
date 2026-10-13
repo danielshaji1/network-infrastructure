@@ -1,0 +1,16 @@
+! ============================================================
+! EtherChannel (LACP) Configuration Template
+! Apply between HQ-DSW1 and HQ-DSW2 distribution switches
+! ============================================================
+
+! --- On BOTH switches ---
+interface range {{MEMBER_INTERFACES}}
+ channel-group {{CHANNEL_NUMBER}} mode active
+ switchport mode trunk
+ switchport trunk native vlan 99
+ switchport trunk allowed vlan 10,20,30,40,50,99
+
+! --- Verify with ---
+! show etherchannel summary
+! show etherchannel port-channel
+! show interfaces port-channel {{CHANNEL_NUMBER}}

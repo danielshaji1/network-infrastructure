@@ -1,0 +1,72 @@
+! ============================================================
+! Base Switch Configuration Template
+! Applies to: HQ-DSW1, HQ-DSW2, HQ-ASW1, HQ-ASW2, BR-ASW1
+! ============================================================
+
+enable
+configure terminal
+
+! --- Hostname ---
+hostname {{HOSTNAME}}
+
+! --- Security Hardening ---
+service password-encryption
+no ip domain-lookup
+enable secret {{ENABLE_SECRET}}
+banner motd #
+***********************************************
+*  NOTICE: Unauthorized access is prohibited  *
+*  All activity is monitored and logged       *
+***********************************************
+#
+
+! --- Console Access ---
+line console 0
+ logging synchronous
+ exec-timeout 10 0
+ password {{CONSOLE_PASSWORD}}
+ login
+
+! --- SSH Configuration ---
+ip domain-name lab.local
+crypto key generate rsa modulus 2048
+ip ssh version 2
+username admin privilege 15 secret {{ADMIN_SECRET}}
+
+line vty 0 15
+ transport input ssh
+ login local
+ exec-timeout 10 0
+
+! --- Management VLAN Interface ---
+interface vlan 10
+ ip address {{MGMT_IP}} 255.255.255.0
+ no shutdown
+
+ip default-gateway {{MGMT_GATEWAY}}
+
+! --- VLAN Database ---
+vlan 10
+ name MGMT
+vlan 20
+ name CORP_DATA
+vlan 30
+ name VOIP
+vlan 40
+ name GUEST_WIFI
+vlan 50
+ name SERVERS
+vlan 99
+ name NATIVE_TRUNK
+vlan 100
+ name BLACKHOLE
+
+! --- Unused Port Hardening ---
+! Assign all unused ports to BLACKHOLE VLAN and shut them down
+! interface range fa0/XX-YY
+!   switchport mode access
+!   switchport access vlan 100
+!   shutdown
+
+end
+write memory

@@ -1,0 +1,26 @@
+! ============================================================
+! OSPF Configuration Template
+! Apply to HQ-RTR and BR-RTR for site-to-site dynamic routing
+! ============================================================
+
+! --- On HQ-RTR ---
+router ospf 1
+ router-id 1.1.1.1
+ network 10.0.0.0 0.0.255.255 area 0
+ network 172.16.0.0 0.0.0.3 area 0
+ passive-interface default
+ no passive-interface g0/1
+ default-information originate
+
+! --- On BR-RTR ---
+router ospf 1
+ router-id 2.2.2.2
+ network 10.1.0.0 0.0.255.255 area 0
+ network 172.16.0.0 0.0.0.3 area 0
+ passive-interface default
+ no passive-interface g0/1
+
+! --- Verify with ---
+! show ip ospf neighbor
+! show ip ospf interface brief
+! show ip route ospf

@@ -1,0 +1,14 @@
+! ============================================================
+! Trunk Port Configuration Template
+! Apply to uplink ports between switches and to router
+! ============================================================
+
+interface {{INTERFACE}}
+ switchport mode trunk
+ switchport trunk native vlan 99
+ switchport trunk allowed vlan 10,20,30,40,50,99
+ no shutdown
+
+! --- Verify with ---
+! show interfaces trunk
+! show interfaces {{INTERFACE}} switchport
